@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="shortcut icon" href="Imagens/favicon.ico" type="image/x-icon">
+    <style>
+       *, *:before, *:after {
+            box-sizing: inherit; /* Garante que bordas não aumentem o tamanho dos elementos */
+        }
+
+        /* Botão Inicial */
+        .surprise-box {
+            padding: 15px 30px;
+            font-size: 18px;
+            background: #ff0055;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(255, 0, 85, 0.3);
+            transition: transform 0.2s, background 0.2s;
+            z-index: 10;
+        }
+
+        .surprise-box:hover {
+            background: #ff2e73;
+            transform: scale(1.05);
+        }
+
+        /* --- CONTÊINER DO JOGO (TAMANHO FIXO DE ANÚNCIO) --- */
+        /* Aumentamos a altura de 280px para 350px */
+    #gameContainer {
+    display: none;
+    position: relative;
+    width: 336px; 
+    height: 350px; /* Altura aumentada */
+    background: black;
+    border: 4px solid #333;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    overflow: hidden;
+    }
+
+        /* --- SEU CSS DO JOGO (ADAPTADO) --- */
+        #menu, #gameOver {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            text-align: center;
+            padding: 10px;
+        }
+
+        #menu h1, #gameOver h2 {
+            font-size: 1.8em;
+            margin: 0 0 15px 0;
+            text-shadow: 0 0 10px #00ffff;
+            color: white;
+        }
+
+        #menu h1 {
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px #00ffff; }
+            to { text-shadow: 0 0 20px #00ffff, 0 0 25px #00ffff; }
+        }
+
+        #startBtn, #restartBtn {
+            padding: 10px 20px;
+            font-size: 1em;
+            border: none;
+            border-radius: 25px;
+            color: black;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        #startBtn {
+            background: linear-gradient(45deg, #00ffff, #0099cc);
+            box-shadow: 0 5px 15px rgba(0,255,255,0.3);
+        }
+
+        #gameCanvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        #ui {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            font-size: 0.9em;
+            font-weight: bold;
+            color: white;
+            text-shadow: 0 0 5px black;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        #gameOver h2 {
+            color: #00ff00;
+            text-shadow: 0 0 15px #00ff00;
+        }
+
+        #restartBtn {
+            background: linear-gradient(45deg, #00ff00, #00cc00);
+            margin-top: 10px;
+        }
+
+        /* --- CONTROLES VISUAIS (SETAS) --- */
+        /* Ajustamos os botões para ficarem bem no fundo, abaixo do limite do player */
+        .game-controls {
+            position: absolute;
+            bottom: 5px; /* Colado no fundo */
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 40px; /* Mais espaço entre as setas */
+            z-index: 50;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.3); /* Um fundo sutil para a área de controle */
+        }
+
+        .arrow-btn {
+    width: 60px; /* Botões um pouco maiores para facilitar o toque */
+    height: 45px;
+    background: rgba(0, 255, 255, 0.1);
+    border: 2px solid rgba(0, 255, 255, 0.5);
+    border-radius: 8px;
+    color: #00ffff;
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    pointer-events: auto;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none;
+    }
+
+        .arrow-btn:active {
+            background: rgba(0, 255, 255, 0.3);
+        }
+    </style>
+    <title>Trabalho de Biologia</title>
+</head>
+<body>
+    <h1>Trabalho de biologia</h1> 
+   <header>
+    <div class="menu-container">
+      <nav>
+        <ul>
+          <li><a href="index.html" type="_self">Início</a></li>
+          <li><a href="vidaforadaterra.html" type="_self">É possível existir vida em outros planetas?</a></li>
+          <li><a href="ODS.html" type="_self">ODS e explicando sobre Astronomia</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+    <h1 id="H1dostrem"><b>É possivel existir vida fora da terra?</b></h1>
+    <hr>
+    <h2>No nosso sistema solar existe a possibilidade?</h2>
+    <p>No Sistema Solar, a existência de vida fora da Terra não foi confirmada, mas indícios apontam para possíveis locais.  Marte apresenta rochas que, segundo o rover Perseverance da NASA, contêm indícios químicos de micróbios antigos, embora seja possível explicar isso pela geologia do planeta. Vênus possui fosfina em suas nuvens, o que sugere a possibilidade de vida, mas sua superfície é absolutamente infernal. <br>
+<br>Luas como Europa (Júpiter), que abriga um oceano sob uma camada de gelo que é duas vezes maior do que o da Terra, Enceladus (Saturno), conhecido por suas plumas orgânicas, e Titã, que possui lagos de metano, estão entre os alvos de missões como a Europa Clipper. Até 2026, sem evidências, mas as investigações prosseguem, destacando a singularidade do nosso planeta.</p>
+    <hr>
+    <h2>Nos outros sistemas solares é possível?</h2> 
+   <p>Exoplanetas na zona habitável são candidatos principais, com água líquida possível. O James Webb detectou em 2025 dimetil sulfeto em K2-18b, indício forte de biologia. TRAPPIST-1 tem mundos rochosos com atmosferas promissoras. Proxima Centauri b sugere oceanos potenciais. Até 2026, sem confirmação, mas estatísticas favorecem vida microbiana na Via Láctea.
+    <br>
+    <br>
+    Esses dados transformam a astrobiologia além do Sistema Solar. TRAPPIST-1e mostra vapor d'água e temperaturas amenas. Dimetil sulfeto é raro sem vida na Terra. LHS 1140 b indica superfícies oceânicas. PLATO buscará terras habitáveis em 2026. Espectroscopia revela atmosferas ricas em oxigênio.
+    <br>
+    <br>
+    A busca continua com telescópios avançados e análise espectral. Milhares de exoplanetas foram catalogados, muitos rochosos. Densidades indicam composições terrestres. Observatórios terrestres complementam o Webb. Hipóteses evoluem com precisão inédita. Distâncias vastas não impedem detecções químicas. Vida simples pode abundar no cosmos.</p>
+    <hr>
+    <h2>Por que nos interessa saber sobre possível vida em outros planetas?</h2>
+    <p>
+        Em primeiro lugar, aborda a questão existencial mais profunda da humanidade: estamos sós no universo? Encontrar qualquer forma de vida em exoplanetas como K2-18b mudaria completamente nossa perspectiva filosófica, religiosa e cultural, indicando que a vida não é uma ocorrência rara na Via Láctea, mas algo comum. Isso uniria diferentes gerações em uma missão cósmica comum.
+        <br>
+        <br>
+        Além disso, promove o progresso científico e tecnológico. Para analisar os enormes volumes de dados, as descobertas do dimetil sulfeto do James Webb precisam de inovações em espectroscopia e inteligência artificial. Missões como PLATO aprimoram a busca por planetas habitáveis, resultando em inovações nas áreas de energia, medicina e comunicação.
+        <br>
+        <br>
+        Por fim, clama por proteção à Terra, nosso único lar conhecido. Quando reconhecemos a raridade da vida, lutamos contra a poluição e as mudanças climáticas, colocando a sustentabilidade em primeiro lugar. Conhecer possíveis vizinhos do além nos impulsiona a cuidar do nosso planeta azul em meio a um universo hostil.
+    </p>
+    
+    
+    <button class="surprise-box" id="surpriseBtn" onclick="revelarSurpresa()">Li e quero uma surpresa!</button>
+
+    <div id="gameContainer">
+        <div id="menu">
+            <h1>🛸 DEFESA ESPACIAL 🛸</h1>
+            <button id="startBtn">INICIAR MISSÃO</button>
+        </div>
+
+        <canvas id="gameCanvas" width="336" height="350"></canvas>
+        
+        <div id="ui">
+            <div>Pontos: <span id="score">0</span></div>
+        </div>
+
+        <div class="game-controls" id="gameControls">
+            <div class="arrow-btn" id="leftBtn">◄</div>
+            <div class="arrow-btn" id="rightBtn">►</div>
+        </div>
+
+        <div id="gameOver">
+            <h2>🎉 MISSÃO CUMPRIDA! 🎉</h2>
+            <p style="color:white; margin:0;">Pontuação Final: <span id="finalScore">0</span></p>
+            <button id="restartBtn">JOGAR NOVAMENTE</button>
+        </div>
+    </div>
+
+    <script>
+        // Função para mostrar o jogo
+        function revelarSurpresa() {
+            document.getElementById('surpriseBtn').style.display = 'none';
+            document.getElementById('gameContainer').style.display = 'block';
+            
+            // Inicia a lógica do jogo
+            if (!window.gameInstance) {
+                window.gameInstance = new SpaceDefender();
+            }
+        }
+
+        class SpaceDefender {
+            constructor() {
+                this.canvas = document.getElementById('gameCanvas');
+                this.ctx = this.canvas.getContext('2d');
+                
+                this.width = 336;
+                this.height = 350;
+                
+                this.score = 0;
+                this.enemies = [];
+                this.gameRunning = false;
+                
+                // Nave do Jogador (Espinho)
+                this.ship = {
+                    x: this.width / 2,
+                    y: this.height - 70,
+                    width: 25,
+                    height: 30,
+                    speed: 6 // Aumentei um pouco a velocidade para compensar o input digital
+                };
+                
+                // Nave-Mãe (Topo)
+                this.motherShip = {
+                    x: this.width / 2,
+                    y: 20,
+                    width: 80,
+                    height: 30
+                };
+                
+                // Estado dos controles (Teclado e Botões Virtuais)
+                this.controls = {
+                    left: false,
+                    right: false
+                };
+                
+                this.init();
+            }
+            
+            init() {
+                this.bindEvents();
+            }
+            
+            bindEvents() {
+                // --- 1. Controles de Teclado (PC) ---
+                document.addEventListener('keydown', (e) => {
+                    if (e.code === 'ArrowLeft') this.controls.left = true;
+                    if (e.code === 'ArrowRight') this.controls.right = true;
+                });
+                document.addEventListener('keyup', (e) => {
+                    if (e.code === 'ArrowLeft') this.controls.left = false;
+                    if (e.code === 'ArrowRight') this.controls.right = false;
+                });
+                
+                // --- 2. Controles Visuais (Setas - Mouse/Touch) ---
+                const leftBtn = document.getElementById('leftBtn');
+                const rightBtn = document.getElementById('rightBtn');
+
+                // Esquerda
+                const startLeft = (e) => { e.preventDefault(); this.controls.left = true; };
+                const endLeft = (e) => { e.preventDefault(); this.controls.left = false; };
+                leftBtn.addEventListener('mousedown', startLeft);
+                leftBtn.addEventListener('mouseup', endLeft);
+                leftBtn.addEventListener('touchstart', startLeft);
+                leftBtn.addEventListener('touchend', endLeft);
+                leftBtn.addEventListener('mouseleave', endLeft); // Garante parada se o mouse sair
+
+                // Direita
+                const startRight = (e) => { e.preventDefault(); this.controls.right = true; };
+                const endRight = (e) => { e.preventDefault(); this.controls.right = false; };
+                rightBtn.addEventListener('mousedown', startRight);
+                rightBtn.addEventListener('mouseup', endRight);
+                rightBtn.addEventListener('touchstart', startRight);
+                rightBtn.addEventListener('touchend', endRight);
+                rightBtn.addEventListener('mouseleave', endRight);
+
+                // --- 3. Botões de menu ---
+                document.getElementById('startBtn').onclick = () => this.startGame();
+                document.getElementById('restartBtn').onclick = () => this.restartGame();
+            }
+
+            startGame() {
+                document.getElementById('menu').style.display = 'none';
+                document.getElementById('gameOver').style.display = 'none';
+                
+                this.gameRunning = true;
+                this.score = 0;
+                this.enemies = [];
+                this.ship.x = this.width / 2;
+                // Reseta estado dos controles ao iniciar
+                this.controls.left = false;
+                this.controls.right = false;
+
+                this.updateUI();
+                this.gameLoop();
+            }
+
+            restartGame() {
+                this.startGame();
+            }
+
+            updateUI() {
+                document.getElementById('score').textContent = this.score;
+            }
+
+            update() {
+                // --- Movimento baseado no estado dos controles ---
+                if (this.controls.left) {
+                    this.ship.x -= this.ship.speed;
+                }
+                if (this.controls.right) {
+                    this.ship.x += this.ship.speed;
+                }
+
+                // Limites da tela
+                const margin = this.ship.width / 2;
+                this.ship.x = Math.max(margin, Math.min(this.width - margin, this.ship.x));
+
+                // Spawn de Cubos (Saem da Nave-Mãe no topo)
+                if (Math.random() < 0.04) {
+                    this.enemies.push({
+                        x: (this.motherShip.x - this.motherShip.width/2) + Math.random() * this.motherShip.width,
+                        y: this.motherShip.y + this.motherShip.height/2,
+                        width: 15,
+                        height: 15,
+                        speed: 2 + (this.score / 1500)
+                    });
+                }
+
+                // Atualizar e verificar colisão
+                for (let i = this.enemies.length - 1; i >= 0; i--) {
+                    const enemy = this.enemies[i];
+                    enemy.y += enemy.speed;
+
+                    // Colisão por proximidade
+                    let dx = this.ship.x - enemy.x;
+                    let dy = (this.ship.y - this.ship.height/2) - enemy.y;
+                    let dist = Math.sqrt(dx*dx + dy*dy);
+
+                    if (dist < 25) {
+                        this.score += 100;
+                        this.enemies.splice(i, 1);
+                        this.updateUI();
+                        continue;
+                    }
+
+                    if (enemy.y > this.height + 20) {
+                        this.enemies.splice(i, 1);
+                    }
+                }
+
+                // Condição de Vitória (3000 pontos)
+                if (this.score >= 3000) {
+                    this.gameWin();
+                }
+            }
+
+            gameWin() {
+                this.gameRunning = false;
+                document.getElementById('finalScore').textContent = this.score;
+                document.getElementById('gameOver').style.display = 'flex';
+            }
+
+            render() {
+                // Rastro do fundo
+                this.ctx.fillStyle = 'rgba(0, 10, 25, 0.3)';
+                this.ctx.fillRect(0, 0, this.width, this.height);
+
+                this.drawPlanet();
+                this.drawMotherShip();
+                this.drawShip();
+                this.drawEnemies();
+            }
+
+            // --- DESENHOS VIA CANVAS ---
+
+            drawPlanet() {
+                this.ctx.save();
+                this.ctx.beginPath();
+                this.ctx.arc(this.width * 0.8, this.height * 0.8, 60, 0, Math.PI * 2);
+                let gradient = this.ctx.createRadialGradient(
+                    this.width * 0.8 - 10, this.height * 0.8 - 10, 10,
+                    this.width * 0.8, this.height * 0.8, 60
+                );
+                gradient.addColorStop(0, '#ff9966');
+                gradient.addColorStop(1, '#663300');
+                this.ctx.fillStyle = gradient;
+                this.ctx.fill();
+                this.ctx.beginPath();
+                this.ctx.arc(this.width * 0.8 + 20, this.height * 0.8 - 15, 15, 0, Math.PI * 2);
+                this.ctx.fillStyle = 'rgba(0,0,0,0.1)';
+                this.ctx.fill();
+                this.ctx.restore();
+            }
+
+            drawMotherShip() {
+                this.ctx.save();
+                this.ctx.translate(this.motherShip.x, this.motherShip.y);
+                this.ctx.fillStyle = '#999999';
+                this.ctx.fillRect(-this.motherShip.width/2, -this.motherShip.height/2, this.motherShip.width, this.motherShip.height);
+                this.ctx.fillStyle = '#ff0000';
+                this.ctx.fillRect(-30, 5, 10, 5);
+                this.ctx.fillRect(20, 5, 10, 5);
+                this.ctx.fillStyle = '#333333';
+                this.ctx.fillRect(-15, -10, 30, 10);
+                this.ctx.restore();
+            }
+
+            drawShip() {
+                this.ctx.save();
+                this.ctx.fillStyle = '#00ffff';
+                this.ctx.shadowBlur = 10;
+                this.ctx.shadowColor = '#00ffff';
+                this.ctx.beginPath();
+                this.ctx.moveTo(this.ship.x, this.ship.y - this.ship.height); 
+                this.ctx.lineTo(this.ship.x - this.ship.width/2, this.ship.y); 
+                this.ctx.lineTo(this.ship.x + this.ship.width/2, this.ship.y);
+                this.ctx.closePath();
+                this.ctx.fill();
+                this.ctx.restore();
+            }
+
+            drawEnemies() {
+                this.ctx.fillStyle = '#ff4444';
+                this.ctx.shadowBlur = 5;
+                this.ctx.shadowColor = '#ff4444';
+                this.enemies.forEach(e => {
+                    this.ctx.fillRect(e.x - e.width/2, e.y - e.height/2, e.width, e.height);
+                });
+            }
+
+            gameLoop() {
+                if (!this.gameRunning) return;
+                this.update();
+                this.render();
+                requestAnimationFrame(() => this.gameLoop());
+            }
+        }
+    </script>
+
+    <footer>
+        <pre>
+        <b>
+        Feito por Pedro Almeida
+        Participantes:
+        <ul class="footer">
+          <li class="lf">Pedro Almeida
+          <li class="lf">Douglas de Jesus
+          <li class="lf">Taylor Augusto
+          <li class="lf">Enzo Diniz
+          <li class="lf">Cauã Mendes &#x1F30E
+        </ul></b>
+        </pre>
+</footer>
+</body>
+</html>
