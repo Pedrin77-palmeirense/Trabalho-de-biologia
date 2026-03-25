@@ -65,6 +65,18 @@
     h2{
       color: white;
     }
+    h2#centro{
+      text-align: center;
+    }
+    h3{
+      color: white;
+      text-align: center;
+    }
+    img{
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
     p{
       color: #ffffff;
       background-image: url(images.jfif);
@@ -79,10 +91,19 @@
       padding: 0px;
     }
 
+    a{
+      text-decoration: none;
+      color: #ffffff;
+    }
+
     @media (max-width: 768px) {
       nav ul {
         flex-direction: column;
         gap: 0.5rem;
         align-items: center;
       }
+    }
+    iframe{
+      display:block;
+      margin: auto;
     }
